@@ -21,7 +21,7 @@ bmiFullArray=[]
 bmiArray=[]
 bmiPositive=[]
 bmiNegative=[]
-filename='heart.csv'
+filename='heart_2020_cleaned.csv'
 with open(filename) as f:
     reader = csv.reader(f)
     header_row = next(reader)

@@ -1,4 +1,3 @@
-#imports
 import numpy as np
 import csv
 import matplotlib as plt
@@ -22,14 +21,25 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 
 #Warnings to make sure I keep getting error
-import warnings
-warnings.filterwarnings('always')  # "error", "ignore", "always", "default", "module" or "once"
+#import warnings
+#warnings.filterwarnings('always')  # "error", "ignore", "always", "default", "module" or "once"
 
 
 #Read in dataset using pandas
 filename='heart_2020_cleaned.csv'
 numberOfRows = 25000
 dSet = pd.read_csv(filename, nrows=numberOfRows)
+
+#Cleaning Dataset, Dropping unused columns
+
+dSet=dSet.drop('AlcoholDrinking',axis=1)
+dSet=dSet.drop('PhysicalHealth',axis=1)
+dSet=dSet.drop('MentalHealth',axis=1)
+dSet=dSet.drop('DiffWalking',axis=1)
+dSet=dSet.drop('GenHealth',axis=1)
+dSet=dSet.drop('KidneyDisease',axis=1)
+dSet=dSet.drop('SkinCancer',axis=1)
+
 
 #print(dSet.to_string())
 
@@ -68,6 +78,7 @@ scaler.fit(X_train)
 StandardScaler()
 
 #KNN Algorithm!
+#Did weights='distance' but it made it worse
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 classifier = KNeighborsClassifier(n_neighbors=30)
@@ -119,4 +130,16 @@ print(accuracy)
 # Cross validation to improve performance (?)
 
 #Write paper
+
+#Confusion matrix:
+#   Top Left: Amount of correctly predicted people who don't have it (True Positive)
+#   Top Right: Amount of people we predicted didn't have a heart attack but actually did (False Positive)
+#   Bottom Left: Amount of people we predicted had a heart attack but actually didn't (False Negative)
+#   Bottom Right: Amount of correctly predicted people who had a heart attack (True Negative)
+#Classification Report
+#   Precision is defined as the ratio of true positives to the sum of true and false positives.
+#   Recall is defined as the ratio of true positives to the sum of true positives and false negatives.
+#   The F1 is the weighted harmonic mean of precision and recall. The closer the value of the F1 score is to 1.0, the better the expected performance of the model is.
+#   Support is the number of actual occurrences of the class in the dataset.
+
 

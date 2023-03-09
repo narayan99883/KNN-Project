@@ -25,6 +25,8 @@ from collections import defaultdict
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 from sklearn import metrics
+from sklearn import preprocessing
+
 
 
 #Warnings to make sure I keep getting error
@@ -70,10 +72,32 @@ dSet['Race']=dSet['Race'].map({'White':0 ,'Black':1,'Asian':2,'American Indian/A
 dSet['Diabetic']=dSet['Diabetic'].map({'No':0 ,'Yes':1,'No, borderline diabetes':2,'Yes (during pregnancy)':3})
 dSet['PhysicalActivity']=dSet['PhysicalActivity'].map({'No':0 ,'Yes':1})
 dSet['AlcoholDrinking']=dSet['AlcoholDrinking'].map({'No':0 ,'Yes':1})
+
+#Normalizing Data
+column = 'AgeCategory'
+dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[column].min())
+
+column = 'Race'
+dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[column].min())
+
+column = 'Diabetic'
+dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[column].min())
+
+column = 'BMI'
+dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[column].min())
+
+column = 'SleepTime'
+dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[column].min()) 
+
+
+
+#normalized_dSet=(dSet-dSet.mean())/dSet.std()
+#dSet = normalized_dSet
+
     
 #Printing
-#print("Printing Data Set after indexing:")
-#print(dSet.to_string())
+print("Printing Data Set after indexing:")
+print(dSet.to_string())
 
 #Splitting dataset by target and feature
 dSet_target = dSet[["HeartDisease"]]
@@ -84,15 +108,15 @@ dSet_features = dSet[["BMI", "Smoking", "Stroke", "Sex", "AgeCategory", "Race", 
 #Getting data ready for testing
 X_train, X_test, y_train, y_test = train_test_split(dSet_features, dSet_target, test_size=0.3)
 
-#normalize data (standardizing values)
-scaler = StandardScaler()
-scaler.fit(X_train)
-StandardScaler()
+#standardizing data
+#scaler = StandardScaler()
+#scaler.fit(X_train)
+#StandardScaler()
 
 #KNN Algorithm!
 #Did weights='distance' but it made it worse
-X_train = scaler.transform(X_train)
-X_test = scaler.transform(X_test)
+#X_train = scaler.transform(X_train)
+#X_test = scaler.transform(X_test)
 classifier = KNeighborsClassifier(n_neighbors=20)
 classifier.fit(X_train, np.ravel(y_train,order='C'))
 KNeighborsClassifier(n_neighbors=30)
@@ -119,34 +143,34 @@ print(accuracy)
 
 
 #TESTING OUT DIFFERENT K VALUES
-k_range = range(1,10)
+k_range = range(1,2)
 
 #Creating a Python dictionary by [] and then appending the accuracy scores
 scores = []
 
 #looping through the range 1 to 50
-for k in k_range:
-    X_train, X_test, y_train, y_test = train_test_split(dSet_features, dSet_target, test_size=k/10)
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    StandardScaler()
-    X_train = scaler.transform(X_train)
-    X_test = scaler.transform(X_test)
-    knn = KNeighborsClassifier(n_neighbors=20)
-    knn.fit(X_train,np.ravel(y_train,order='C'))
-    y_pred = knn.predict(X_test)
-    scores.append(metrics.accuracy_score(y_test, y_pred))
+#for k in k_range:
+#    X_train, X_test, y_train, y_test = train_test_split(dSet_features, dSet_target, test_size=k/10)
+#    scaler = StandardScaler()
+#    scaler.fit(X_train)
+#    StandardScaler()
+#    X_train = scaler.transform(X_train)
+#    X_test = scaler.transform(X_test)
+#    knn = KNeighborsClassifier(n_neighbors=20)
+#    knn.fit(X_train,np.ravel(y_train,order='C'))
+#    y_pred = knn.predict(X_test)
+#    scores.append(metrics.accuracy_score(y_test, y_pred))
 
-print(scores)
+#print(scores)
 
 # printing the k number of neighbors and testing accuracy
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
-plt.plot([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9], scores)
-plt.xlabel('Train-test ratio')
-plt.ylabel('Testing Accuracy with k=20')
-plt.title("Accuracy score for different train-test ratios")
-plt.show()
+#plt.plot([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9], scores)
+#plt.xlabel('Train-test ratio')
+#plt.ylabel('Testing Accuracy with k=20')
+#plt.title("Accuracy score for different train-test ratios")
+#plt.show()
 
 
 

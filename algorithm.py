@@ -33,16 +33,16 @@ from sklearn import metrics
 
 
 
-filename = 'heart_2020_cleaned.csv'
-n = sum(1 for line in open(filename)) - 1 #number of records in file (excludes header)
-numberOfRows = 25000 #desired sample size
-skip = sorted(random.sample(range(1,n+1),n-numberOfRows)) #the 0-indexed header will not be included in the skip list
-dSet = pd.read_csv(filename, skiprows=skip)
+#filename = 'heart_2020_cleaned.csvned.csv'
+#n = sum(1 for line in open(filename)) - 1 #number of records in file (excludes header)
+#numberOfRows = 25000 #desired sample size
+#skip = sorted(random.sample(range(1,n+1),n-numberOfRows)) #the 0-indexed header will not be included in the skip list
+#dSet = pd.read_csv(filename, skiprows=skip)
 
 #Read in dataset using pandas
-#filename='heart_2020_cleaned.csv'
-#numberOfRows = 25000
-#dSet = pd.read_csv(filename, nrows=numberOfRows)
+filename='heart_2020_cleaned.csv'
+numberOfRows = 25000
+dSet = pd.read_csv(filename, nrows=numberOfRows)
 
 #Cleaning Dataset, Dropping unused columns
 dSet=dSet.drop('Asthma',axis=1)

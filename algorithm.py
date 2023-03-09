@@ -73,6 +73,36 @@ dSet['Diabetic']=dSet['Diabetic'].map({'No':0 ,'Yes':1,'No, borderline diabetes'
 dSet['PhysicalActivity']=dSet['PhysicalActivity'].map({'No':0 ,'Yes':1})
 dSet['AlcoholDrinking']=dSet['AlcoholDrinking'].map({'No':0 ,'Yes':1})
 
+sleep1=0
+#0-4
+sleep2=0
+#5-9
+sleep3=0
+#10-14
+sleep4=0
+#15-19
+sleep5=0
+#20-24
+counter=0
+for x in range(300000):
+    if dSet.loc[x,"HeartDisease"]==1:
+        if dSet.loc[x,"SleepTime"]==0 or dSet.loc[x,"SleepTime"]==1 or dSet.loc[x,"SleepTime"]==2 or dSet.loc[x,"SleepTime"]==3 or dSet.loc[x,"SleepTime"]==4:
+            sleep1=sleep1+1
+        elif dSet.loc[x,"SleepTime"]==5 or dSet.loc[x,"SleepTime"]==6 or dSet.loc[x,"SleepTime"]==7 or dSet.loc[x,"SleepTime"]==8 or dSet.loc[x,"SleepTime"]==9:
+            sleep2=sleep2+1
+        elif dSet.loc[x,"SleepTime"]==10 or dSet.loc[x,"SleepTime"]==11 or dSet.loc[x,"SleepTime"]==12 or dSet.loc[x,"SleepTime"]==13 or dSet.loc[x,"SleepTime"]==14:
+            sleep3=sleep3+1
+        elif dSet.loc[x,"SleepTime"]==15 or dSet.loc[x,"SleepTime"]==16 or dSet.loc[x,"SleepTime"]==17 or dSet.loc[x,"SleepTime"]==18 or dSet.loc[x,"SleepTime"]==19:
+            sleep4=sleep4+1
+        elif dSet.loc[x,"SleepTime"]==20 or dSet.loc[x,"SleepTime"]==21 or dSet.loc[x,"SleepTime"]==22 or dSet.loc[x,"SleepTime"]==23 or dSet.loc[x,"SleepTime"]==24:
+            sleep5=sleep5+1
+x=np.array(["0-4","5-9","10-14","15-19","20-24"])
+y=np.array([sleep1,sleep2,sleep3,sleep4,sleep5])
+plt.bar(x,y)
+plt.xlabel("Sleep Time Ranges")
+plt.ylabel("Number of positive heart attacks")
+plt.title("Number of heart attacks in each sleep time range")
+plt.show()
 #Normalizing Data
 column = 'AgeCategory'
 dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[column].min())

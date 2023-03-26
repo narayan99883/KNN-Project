@@ -26,6 +26,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 from sklearn import metrics
 from sklearn import preprocessing
+from sklearn.ensemble import RandomForestClassifier
 
 #Comment for final code
 
@@ -96,8 +97,8 @@ dSet[column] = (dSet[column] - dSet[column].min()) / (dSet[column].max() - dSet[
 
     
 #Printing
-print("Printing Data Set after indexing:")
-print(dSet.to_string())
+#print("Printing Data Set after indexing:")
+#print(dSet.to_string())
 
 #Splitting dataset by target and feature
 dSet_target = dSet[["HeartDisease"]]
@@ -119,7 +120,7 @@ X_train, X_test, y_train, y_test = train_test_split(dSet_features, dSet_target, 
 #X_test = scaler.transform(X_test)
 classifier = KNeighborsClassifier(n_neighbors=20)
 classifier.fit(X_train, np.ravel(y_train,order='C'))
-KNeighborsClassifier(n_neighbors=30)
+KNeighborsClassifier(n_neighbors=20)
 y_pred = classifier.predict(X_test)
 
 #Printing results
@@ -130,6 +131,28 @@ print(classification_report(y_test, y_pred))
 accuracy =  accuracy_score(y_test,y_pred)*100
 print(accuracy)
 
+#Feature Importance
+rnd_clf = RandomForestClassifier(n_estimators=1000, min_samples_leaf=20, n_jobs=-1, random_state=42)
+rnd_clf.fit(dSet_features, dSet_target.values.ravel())
+pltNames = []
+for name, importance in zip(dSet_features, rnd_clf.feature_importances_):
+    print(name, "=", importance)
+    pltNames.append(name)
+
+prediction = rnd_clf.predict(X_test)
+print(accuracy_score(y_test, prediction))
+    
+features = dSet_features
+importances = rnd_clf.feature_importances_
+indices = np.argsort(importances)
+pltNames.reverse()
+
+plt.title('Feature Importances')
+plt.barh(pltNames, importances[indices], color='b', align='center')
+#plt.yticks(range(len(indices)), [features[i] for i in indices])
+plt.xlabel('Relative Importance')
+plt.show()
+
 #Usually 90.5 - 90.7
 
 #Results:
@@ -139,7 +162,6 @@ print(accuracy)
 #691 people - we say heart attack, they actually dont have heart attack (wrong) (we are just being safe wrong)
 #19 people - we say no heart attack, they actually did (wrong) (this is bad wrong)
 #22 people - we say heart attack, they actually did have heart attack (correct)
-
 
 
 #TESTING OUT DIFFERENT K VALUES
